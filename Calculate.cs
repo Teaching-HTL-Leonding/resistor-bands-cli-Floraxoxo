@@ -7,40 +7,53 @@ public class Resistor
     public string Color3;
     public string Color4;
     public string Color5 = "";
+    public int number1, number2, number3, number5;
+    public double number4;
     public bool fiveColors = false;
 
-    private int ConvertColorToDigit(string color)
+    private bool TryConvertColorToDigit(string color, out int number)
     {
         switch (color)
         {
-            case "bla": return BLACK;
-            case "bro": return BROWN;
-            case "red": return RED;
-            case "ora": return ORANGE;
-            case "yel": return YELLOW;
-            case "gre": return GREEN;
-            case "blu": return BLUE;
-            case "vio": return VIOLET;
-            case "gra": return GRAY;
-            case "whi": return WHITE;
-            default: return -1;
+            case "bla": number = BLACK; return true;
+            case "bro": number = BROWN; return true;
+            case "red": number = RED; return true;
+            case "ora": number = ORANGE; return true;
+            case "yel": number = YELLOW; return true;
+            case "gre": number = GREEN; return true;
+            case "blu": number = BLUE; return true;
+            case "vio": number = VIOLET; return true;
+            case "gra": number = GRAY; return true;
+            case "whi": number = WHITE; return true;
+            default: number = -1; return false;
         }
     }
 
-    private double GetToleranceFromColor(string color)
+    private bool TryGetToleranceFromColor(string color, out double number4)
     {
         switch (color)
         {
-            case "bro": return 1;
-            case "red": return 2;
-            case "gre": return 0.5;
-            case "blu": return 0.25;
-            case "vio": return 0.10;
-            case "gra": return 0.05;
-            case "gol": return 5;
-            case "sil": return 10;
-            default: return -1;
+            case "bro": number4 = 1; return true;
+            case "red": number4 = 2; return true;
+            case "gre": number4 = 0.5; return true;
+            case "blu": number4 = 0.25; return true;
+            case "vio": number4 = 0.10; return true;
+            case "gra": number4 = 0.05; return true;
+            case "gol": number4 = 5; return true;
+            case "sil": number4 = 10; return true;
+            default: number4 = -1; return false;
         }
+    }
+
+    private void UseMethods()
+    {
+        TryConvertColorToDigit(Color1, out number1);
+        TryConvertColorToDigit(Color2, out number2);
+        if (fiveColors) {TryConvertColorToDigit(Color5, out number5);}
+        if (number1 == -1|| number2 == -1 || number5 == -1) {Console.WriteLine("Wrong Input");}
+        TryConvertColorToDigit(Color3, out number3);
+        if (number3 == -1) {Console.WriteLine("Wrong Multiplicator");}
+        
     }
 
     public Resistor(string text)
@@ -56,17 +69,20 @@ public class Resistor
         Color4 = text;
     }
 
-    public double GetValue()
+    public double TryGetValue()
     {
-        double digit = ConvertColorToDigit(Color1) * 10;
-        digit += ConvertColorToDigit(Color2);
-        if (fiveColors) { digit *= 10; digit += ConvertColorToDigit(Color5); }
-        digit *= Math.Pow(10, ConvertColorToDigit(Color3));
+        UseMethods();
+        double digit = number1 * 10;
+        digit += number2;
+        if (fiveColors) { digit *= 10; digit += number5; }
+        digit *= Math.Pow(10, number3);
         return digit;
     }
 
-    public double GetTolerance()
+    public double TryGetTolerance()
     {
-        return GetToleranceFromColor(Color4);
+        TryGetToleranceFromColor(Color4, out number4);
+        if (number4 == -1) {Console.WriteLine("Wrong Tolerance. Please try again!");}
+        return number4;
     }
 }

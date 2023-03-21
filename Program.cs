@@ -2,6 +2,6 @@
 Console.Clear();
 
 Resistor r = new(args[0]);
-Console.WriteLine($"ohm: {r.GetValue()}, percentage: {r.GetTolerance()}");
+Console.WriteLine($"ohm: {r.TryGetValue()}, percentage: {r.TryGetTolerance()}");
  
 #endregion
